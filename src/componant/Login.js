@@ -70,7 +70,7 @@
 //                     // Optionally, set an expiration date for the cookie (e.g., 7 days)
 //                     const days = 7;
 //                     const date = new Date();
-//                     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+//                     date.setTime(date.getTime() + (days  24  60  60  1000));
 //                     const expires = `; expires=${date.toUTCString()}`;
 
 //                     document.cookie = `admin=${encodeURIComponent(adminString)}${expires}; path=/`;
@@ -202,16 +202,23 @@ export default function Login() {
         try {
             const login = await axios.post(`${api}/login`, loginData);
             const { data } = login;
+            console.log(login.status);
+
             setisLoading(false);
             // setOpen(true);
-            if (data.response === 200) {
+            if (login.status === 200) {
+                // const admin = {
+                //     token: data.token,
+                //     name: data.data.name,
+                //     email: data.data.email,
+                //     fcm: data.data.fcm,
+                //     phone: data.data.phone,
+                //     role: data.data.role,
+                // };
                 const admin = {
-                    token: data.token,
-                    name: data.data.name,
-                    email: data.data.email,
-                    fcm: data.data.fcm,
-                    phone: data.data.phone,
-                    role: data.data.role,
+                    token: login.data.access_token,
+                    name: login.data.user.name,
+                    email: login.data.user.email,
                 };
                 console.log(admin);
                 sessionStorage.setItem("admin", JSON.stringify(admin));
